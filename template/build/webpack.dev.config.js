@@ -11,20 +11,17 @@ devConfig.plugins = (devConfig.plugins || []).concat([
     new webpack.DefinePlugin({
         'process.env': config.dev.env
     }),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
 ]);
 
 // see https://webpack.github.io/docs/webpack-dev-server.html
 devConfig.devServer = {
     hot: true,
     noInfo: false,
-    quite: false,
+    quiet: false,
     port: config.dev.port,
-    debug:true,
     inline: true,
-    progress: true,
     historyApiFallback: true,
-    colors: true,
     stats: 'normal',
     contentBase: config.dev.assetsPublicPath,
     publicPath: config.dev.assetsPublicPath
@@ -44,5 +41,5 @@ module.exports = Object.assign({},devConfig,{
         publicPath: config.dev.assetsPublicPath,
         sourceMapFilename: '[file].map'
     },
-    devtool:'#cheap-module-eval-source-map'
+    devtool:'cheap-module-eval-source-map'
 });

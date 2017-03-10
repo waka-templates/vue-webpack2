@@ -10,14 +10,14 @@ let projectRoot = path.resolve(__dirname, '../');
 
 module.exports = {
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.vue$/,
-                loader: 'vue'
+                use: ['vue-loader']
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
+                use: ['babel-loader'],
                 include: [
                   path.join(projectRoot, 'src')
                 ],
@@ -25,42 +25,56 @@ module.exports = {
             },
             {
                 test:/\.css$/,
-                loader:ExtractTextPlugin.extract('vue-style','css')
+                use: ExtractTextPlugin.extract({
+                    fallback: "vue-style-loader",
+                    use: ["css-loader",{
+                        loader: 'postcss-loader',
+                        options:{
+                            plugins: [
+                                require('autoprefixer')({ browsers: ['last 5 versions','Android >= 4.0', 'iOS >= 7'] })
+                            ],
+                            sourceMap: "inline"
+                        }
+                    }]
+                })
             },
             {
                 test: /\.(png|jpg|gif|jpeg)$/,
-                loader: 'url',
-                query: {
-                    limit: 10000,
-                    name: '[name].[ext]?[hash]'
-                }
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        name: '[name].[ext]?[hash]'
+                    }
+                }]
             },
             {
                 test: /\.(swf|eot|svg|ttf|woff|svg)$/,
-                loader: "file-loader"
+                use: ["file-loader"]
             }
         ]
     },
+
     resolve:{
-        extensions:["",".js",".vue"],
-        fallback: [path.join(__dirname, '../node_modules')],
+        extensions:[".js",".vue"],
+        modules: [path.join(__dirname, '../node_modules')],
         alias:{
             '@src': path.resolve(__dirname, '../src'),
             '@components': path.resolve(__dirname, '../src/components'),
             'vue': 'vue/dist/vue.js'
         }
     },
+
     resolveLoader: {
-        fallback: [path.join(__dirname, '../node_modules')]
+        modules: [path.join(__dirname, '../node_modules')]
     },
-    vue:{
-        postcss: [require('autoprefixer')({
-          browsers: ['last 5 versions','Android >= 4.0', 'iOS >= 7']
-        })]
+
+    performance: {
+        hints: false
     },
+
     plugins:[
         new ExtractTextPlugin("styles.css"),
-        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name:"vendor",
             filename:"vendor.js"

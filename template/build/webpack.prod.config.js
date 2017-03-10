@@ -7,7 +7,6 @@ let prodConfig = require('./webpack.base.config');
 let config = require('../config');
 
 prodConfig.plugins = (prodConfig.plugins || []).concat([
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
         'process.env': config.build.env
     }),
@@ -15,9 +14,7 @@ prodConfig.plugins = (prodConfig.plugins || []).concat([
         compress: {
             warnings: false
         },
-        output: {
-            comments: false
-        },
+        comments: false,
         sourceMap: true,
         mangle: true
     })
@@ -33,5 +30,5 @@ module.exports = Object.assign({},prodConfig,{
         publicPath: config.build.assetsPublicPath,
         sourceMapFilename: '[file].map'
     },
-    devtool:'#source-map'
+    devtool:'source-map'
 });
