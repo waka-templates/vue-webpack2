@@ -70,7 +70,7 @@ module.exports = function(config) {
         webpack: {
             devtool: 'inline-source-map',
             module: {
-                loaders: [
+                rules: [
                     {
                         test: /\.js$/,
                         exclude: /node_modules/,
@@ -83,8 +83,8 @@ module.exports = function(config) {
                 ]
             },
             resolve:{
-                extensions:["",".js",".vue"],
-                fallback: [path.join(__dirname, '../node_modules')],
+                extensions:[".js",".vue"],
+                modules: [path.join(__dirname, '../node_modules')],
                 alias:{
                     '@src': path.resolve(__dirname, '../src'),
                     '@components': path.resolve(__dirname, '../src/components'),
