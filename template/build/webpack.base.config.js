@@ -3,7 +3,6 @@
 let path = require('path');
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 let vendor = ['vue'];
 let projectRoot = path.resolve(__dirname, '../');
@@ -13,7 +12,14 @@ module.exports = {
         rules: [
             {
                 test: /\.vue$/,
-                use: ['vue-loader']
+                use: [{
+                    loader:'vue-loader',
+                    options: {
+                      postcss: [
+                          require('autoprefixer')({ browsers: ['last 5 versions','Android >= 4.0', 'iOS >= 7'] })
+                      ]
+                    }
+                }]
             },
             {
                 test: /\.js$/,
@@ -22,21 +28,6 @@ module.exports = {
                   path.join(projectRoot, 'src')
                 ],
                 exclude: /node_modules/
-            },
-            {
-                test:/\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "vue-style-loader",
-                    use: ["css-loader",{
-                        loader: 'postcss-loader',
-                        options:{
-                            plugins: [
-                                require('autoprefixer')({ browsers: ['last 5 versions','Android >= 4.0', 'iOS >= 7'] })
-                            ],
-                            sourceMap: "inline"
-                        }
-                    }]
-                })
             },
             {
                 test: /\.(png|jpg|gif|jpeg)$/,
@@ -74,7 +65,6 @@ module.exports = {
     },
 
     plugins:[
-        new ExtractTextPlugin("styles.css"),
         new webpack.optimize.CommonsChunkPlugin({
             name:"vendor",
             filename:"vendor.js"

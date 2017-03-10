@@ -2,11 +2,26 @@
 
 let path = require('path');
 let webpack = require('webpack');
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 let prodConfig = require('./webpack.base.config');
 let config = require('../config');
 
+prodConfig.module.rules.unshift({
+    test:/\.css$/,
+    use: ExtractTextPlugin.extract({
+        fallback: "vue-style-loader",
+        use: ["css-loader",{
+            loader: 'postcss-loader',
+            options:{
+                sourceMap: "inline"
+            }
+        }]
+    })
+});
+
 prodConfig.plugins = (prodConfig.plugins || []).concat([
+    new ExtractTextPlugin("styles.css"),
     new webpack.DefinePlugin({
         'process.env': config.build.env
     }),
