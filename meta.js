@@ -33,5 +33,5 @@ module.exports = {
     "test/**/*": "test",
     "config/test.env.js": "test"
   },
-  "completeMessage": "To get started:\n\n  cd {{destDirName}}\n  npm install\n  npm run dev\n\nDocumentation can be found at https://github.com/waka-templates/vue-webpack"
+  "completeMessage": "To get started:\n\n  cd {{destDirName}}\n  npm install\n  npm run dev\n\nDocumentation can be found at https://github.com/waka-templates/vue-webpack2"
 }
